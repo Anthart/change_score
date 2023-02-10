@@ -21,34 +21,38 @@ methods = {
     }
 }
 
-selected_method = "first_method"
+selected_method = "second_method"
 
 route_files = "files/"
 route_results = "results/"
-file_name = "resultado_strat2_version4_Test"
+file_name = "resultado_strat3_version9_Test"
 
-df = pd.read_excel(route_files + file_name + '.xlsx', index_col=0)
+try:
+    df = pd.read_excel(route_files + file_name + '.xlsx', index_col=0)
 
-df["change"] = df["Respuesta GPT3"].apply(
-    lambda row,value: value[row], 
-    args =(methods[selected_method], )
-    ) 
+    df["change"] = df["Respuesta GPT3"].apply(
+        lambda row,value: value[row], 
+        args =(methods[selected_method], )
+        ) 
 
-true = df.loc[:, "complexity"]
-predicted = df.loc[:, "change"]
+    true = df.loc[:, "complexity"]
+    predicted = df.loc[:, "change"]
 
-metrics = {
-    "MAE": round(mean_absolute_error(true, predicted), 4),
-    "MSE": round(mean_squared_error(true, predicted), 4),
-    "RMSE": round(mean_squared_error(true, predicted, squared=False), 4),
-    "R2": round(r2_score(true, predicted), 4),
-    "Pearson": round(true.corr(predicted, method='pearson'), 4),
-    "Spearman": round(true.corr(predicted, method='spearman'), 4)
-}
+    metrics = {
+        "MAE": round(mean_absolute_error(true, predicted), 4),
+        "MSE": round(mean_squared_error(true, predicted), 4),
+        "RMSE": round(mean_squared_error(true, predicted, squared=False), 4),
+        "R2": round(r2_score(true, predicted), 4),
+        "Pearson": round(true.corr(predicted, method='pearson'), 4),
+        "Spearman": round(true.corr(predicted, method='spearman'), 4)
+    }
 
-print(metrics)
+    print(metrics)
 
-tf = open(route_results + file_name.split("_")[2] + "_" + selected_method + ".json", "w")
-json.dump(metrics,tf)
-tf.close()
-
+    tf = open(route_results + file_name.split("_")[2] + "_" + selected_method + ".json", "w")
+    json.dump(metrics,tf)
+    tf.close()
+except FileNotFoundError as err:
+    print(err)
+except Exception as err:
+    print(err)

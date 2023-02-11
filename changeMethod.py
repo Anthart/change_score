@@ -19,13 +19,13 @@ methods = {
         "difficult": 0.5880268389141909, 
         "very difficult": 0.8111511532380951
     }
-}
+} 
 
-selected_method = "second_method"
+selected_method = "first_method"
 
 route_files = "files/"
 route_results = "results/"
-file_name = "resultado_strat3_version9_Test"
+file_name = "resultado_strat2_version11_Test"
 
 try:
     df = pd.read_excel(route_files + file_name + '.xlsx', index_col=0)
